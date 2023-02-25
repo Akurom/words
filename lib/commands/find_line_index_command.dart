@@ -6,8 +6,7 @@ class FindLineIndexCommand extends BaseCommand {
 
   FindLineIndexCommand(BuildContext context) : super(context);
 
-  Future<int> run(Axis axis, double max, double p)  async {
-
+  int run(Axis axis, double max, double p) {
     return (p / max * (axis == Axis.horizontal ? gameModel.rowNumber : gameModel.colsNumber)).floor();
   }
 }

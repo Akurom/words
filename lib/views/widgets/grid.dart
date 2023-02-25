@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:words/commands/find_line_index_command.dart';
@@ -31,8 +32,6 @@ class Grid extends StatelessWidget {
 
     print ('[!] GRID BUILT!');
 
-    double? x;
-    double? y;
     int? index;
 
 
@@ -40,6 +39,7 @@ class Grid extends StatelessWidget {
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
+      dragStartBehavior: DragStartBehavior.down,
       child: IgnorePointer(
         ignoring: true,
         child: Stack(
@@ -50,30 +50,33 @@ class Grid extends StatelessWidget {
         ),
       ),
 
+
       onVerticalDragStart: (details) async {
         SetRowGridVisibilityCommand(context).run(false);
-        index = await FindLineIndexCommand(context).run(Axis.vertical, screenWidth(context), details.globalPosition.dx,);
+        //index = FindLineIndexCommand(context).run(Axis.vertical, screenWidth(context), details.globalPosition.dx,);
+        // quicker ?
+        index = (details.globalPosition.dx / screenWidth(context) * (game.colsNumber)).floor();
       },
       onVerticalDragUpdate: (details) async {
         HandleDragUpdateCommand(context).run(index!, Axis.vertical, screenHeight(context), details.delta.dy);
       },
       onVerticalDragEnd: (details) async {
         await HandleDragEndCommand(context).run(index!, Axis.vertical, screenHeight(context), screenWidth(context));
-        x = null;
         index = null;
         SetRowGridVisibilityCommand(context).run(true);
       },
 
       onHorizontalDragStart: (details) async {
         SetColumnGridVisibilityCommand(context).run(false);
-        index = await FindLineIndexCommand(context).run(Axis.horizontal, screenHeight(context), details.globalPosition.dy,);
+        //index = FindLineIndexCommand(context).run(Axis.horizontal, screenHeight(context), details.globalPosition.dy,);
+        // quicker ?
+        index = (details.globalPosition.dy / screenHeight(context) * (game.rowNumber)).floor();
       },
       onHorizontalDragUpdate: (details) {
         HandleDragUpdateCommand(context).run(index!, Axis.horizontal, screenWidth(context), details.delta.dx);
       },
       onHorizontalDragEnd: (details) async {
         await HandleDragEndCommand(context).run(index!, Axis.horizontal, screenWidth(context), screenHeight(context));
-        y = null;
         index = null;
         SetColumnGridVisibilityCommand(context).run(true);
       },
