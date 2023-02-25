@@ -16,7 +16,10 @@ class RowGrid extends StatelessWidget {
       return Visibility(
         visible: rowGrid.isVisible,
         child: Container(
-          decoration: BoxDecoration(border: Border.all(), color: Colors.red.withOpacity(0.2)),
+          decoration: BoxDecoration(
+              //border: Border.all(),
+              //color: Colors.red.withOpacity(0.2)
+          ),
 
           child: Column(
             children: [

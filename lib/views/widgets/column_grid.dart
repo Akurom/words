@@ -18,8 +18,8 @@ class ColumnGrid extends StatelessWidget {
         visible: colGrid.isVisible,
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(),
-              color: Colors.blue.withOpacity(0.2)
+              //border: Border.all(),
+              //color: Colors.blue.withOpacity(0.2)
           ),
 
           child: Row(

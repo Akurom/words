@@ -16,6 +16,7 @@ class ColumnGridModel extends ChangeNotifier {
   List<ColumnModel> get columns => _columns;
   bool get isVisible => _isVisible;
 
+
   void setVisibility(bool isVisible) {
     _isVisible = isVisible;
     notifyListeners();

@@ -23,10 +23,15 @@ class Grid extends StatelessWidget {
   }
 
 
-  void _handleDragEnd(GameModel game, Axis axis, double axisSize, double crossAxisSize, double crossPosition) {
+  Future<void> _handleDragEnd(
+      GameModel game,
+      Axis axis,
+      axisSize,
+      double crossAxisSize,
+      double crossPosition)
+  async {
 
     double itemSize = axisSize / (axis == Axis.horizontal ? game.colsNumber : game.rowNumber);
-    print(itemSize);
     // find coll or row index in corresponding model
     int index = _findLineIndex(game, axis, crossAxisSize, crossPosition);
 
@@ -36,7 +41,6 @@ class Grid extends StatelessWidget {
     } else if (axis == Axis.vertical) {
       scrollController = game.gridModel.columnGrid.columns[index].scrollController;
     }
-
     double offset = scrollController.offset;
     // find delta from aligned letters (sticky)
     double delta = offset % itemSize;
@@ -44,10 +48,44 @@ class Grid extends StatelessWidget {
     // stick
     scrollController
         .animateTo(targetOffset, duration: Duration(milliseconds: 500), curve: Curves.linear);
-    // find index of column start
-    /*int newI = (((_targetOffset! + targetOffset) % (17*letterHeight))
-        / letterHeight).floor();*/
-    //print('$newI, ${letters[index][newI]}');
+
+    // find new index of line start to restructure grid
+    int nbItemsPerLine = axis == Axis.horizontal ? game.rowNumber : game.colsNumber;
+    int newI = (targetOffset % (nbItemsPerLine * itemSize) / itemSize).round();
+
+    var items;
+    //String letter = items[newI].letter;
+    //print ('$newI $letter');
+
+    // restructure
+    if (axis == Axis.horizontal) {
+      items = game.gridModel.rowsGrid.rows[index].items;
+      // ****
+      print (items.map((e) => e.letter));
+      items = items.sublist(newI) + items.sublist(0, newI);
+      print (items.map((e) => e.letter));
+
+      game.gridModel.rowsGrid.rows[index].items = items;
+
+      for (int i = 0; i < game.gridModel.columnGrid.columns.length; i++) {
+        game.gridModel.columnGrid.columns[i].items[index] = items[i];
+      }
+    } else if (axis == Axis.vertical) {
+
+      items = game.gridModel.columnGrid.columns[index].items;
+      // ****
+      print (items.map((e) => e.letter));
+      items = items.sublist(newI) + items.sublist(0, newI);
+      print (items.map((e) => e.letter));
+      game.gridModel.columnGrid.columns[index].items = items;
+      // structure rowGrid.rows
+      for (int i = 0; i < game.gridModel.rowsGrid.rows.length; i++) {
+        game.gridModel.rowsGrid.rows[i].items[index] = items[i];
+      }
+      print((game.gridModel.columnGrid.columns[index].items).map((e) => e.letter));
+    }
+
+
   }
 
 
@@ -97,10 +135,11 @@ class Grid extends StatelessWidget {
         // store targetOffset
         _targetOffset = _targetOffset ?? 0 + targetOffset;
       },
-      onVerticalDragEnd: (details) {
-        _handleDragEnd(game, Axis.vertical, screenHeight(context), screenWidth(context), _x!);
+      onVerticalDragEnd: (details) async {
+        await _handleDragEnd(game, Axis.vertical, screenHeight(context), screenWidth(context), _x!);
         _x = null;
         _targetOffset = null;
+
 
         SetRowGridVisibilityCommand(context).run(true);
       },
@@ -120,8 +159,8 @@ class Grid extends StatelessWidget {
         // store targetOffset
         _targetOffset = _targetOffset ?? 0 + targetOffset;
       },
-      onHorizontalDragEnd: (details) {
-        _handleDragEnd(game, Axis.horizontal, screenWidth(context), screenHeight(context), _y!);
+      onHorizontalDragEnd: (details) async {
+        await _handleDragEnd(game, Axis.horizontal, screenWidth(context), screenHeight(context), _y!);
         _y = null;
         _targetOffset = null;
 

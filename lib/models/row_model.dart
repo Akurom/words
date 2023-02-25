@@ -14,5 +14,7 @@ class RowModel extends ChangeNotifier {
 
   ScrollController get scrollController => _scrollController;
   List<ItemModel> get items => _items;
-
+  void set items(List<ItemModel> newItems) {
+    _items = newItems;
+  }
 }
