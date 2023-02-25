@@ -10,7 +10,7 @@ import 'package:words/utils/utils.dart';
 
 class GridModel with ChangeNotifier {
 
-  late List<List<ItemModel>> _grid;
+  //late List<List<ItemModel>> _grid;
   late ColumnGridModel _columnGrid = ColumnGridModel();
   late RowGridModel _rowGrid = RowGridModel();
 
@@ -19,19 +19,19 @@ class GridModel with ChangeNotifier {
 
     String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    _grid = List.generate(nbCols, (index)
+    List<List<ItemModel>> grid = List.generate(nbCols, (index)
       => List.generate(nbRows, (index)
       => ItemModel.initLetter(letter: chars[randInt(0, chars.length)])));
 
     List<ColumnModel> cols = [];
     List<RowModel> rows = [];
 
-    for (List<ItemModel> col in _grid) {
+    for (List<ItemModel> col in grid) {
       cols.add(ColumnModel(items: col, scrollOffset: 0.0));
     }
-    for  (int i = 0; i < _grid[0].length; i ++) {
+    for  (int i = 0; i < grid[0].length; i ++) {
       List<ItemModel> rowItems = [];
-      for (List<ItemModel> col in _grid) {
+      for (List<ItemModel> col in grid) {
         rowItems.add(col[i]);
       }
       rows.add(RowModel(items: rowItems, scrollOffset: 0.0));
