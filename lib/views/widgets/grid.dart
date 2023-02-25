@@ -55,11 +55,10 @@ class Grid extends StatelessWidget {
         index = await FindLineIndexCommand(context).run(Axis.vertical, screenWidth(context), details.globalPosition.dx,);
       },
       onVerticalDragUpdate: (details) async {
-        print(index);
         HandleDragUpdateCommand(context).run(index!, Axis.vertical, screenHeight(context), details.delta.dy);
       },
       onVerticalDragEnd: (details) async {
-        await HandleDragEndCommand(context).run(index!, game, Axis.vertical, screenHeight(context), screenWidth(context));
+        await HandleDragEndCommand(context).run(index!, Axis.vertical, screenHeight(context), screenWidth(context));
         x = null;
         index = null;
         SetRowGridVisibilityCommand(context).run(true);
@@ -73,7 +72,7 @@ class Grid extends StatelessWidget {
         HandleDragUpdateCommand(context).run(index!, Axis.horizontal, screenWidth(context), details.delta.dx);
       },
       onHorizontalDragEnd: (details) async {
-        await HandleDragEndCommand(context).run(index!, game, Axis.horizontal, screenWidth(context), screenHeight(context));
+        await HandleDragEndCommand(context).run(index!, Axis.horizontal, screenWidth(context), screenHeight(context));
         y = null;
         index = null;
         SetColumnGridVisibilityCommand(context).run(true);
