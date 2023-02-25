@@ -6,7 +6,6 @@ import 'package:words/models/game_model.dart';
 import 'package:words/models/grid_model.dart';
 import 'package:words/models/row_grid_model.dart';
 import 'package:words/views/widgets/letter.dart';
-import 'package:words/views/pages/game_page_OLD.dart';
 import 'package:words/const/size_constants.dart';
 import 'package:words/utils/utils.dart';
 import 'views/pages/game_page.dart';

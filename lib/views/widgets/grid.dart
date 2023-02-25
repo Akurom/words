@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:words/commands/set_column_grid_visibility_command.dart';
+import 'package:words/commands/set_row_grid_visibility_command.dart';
 import 'package:words/const/size_constants.dart';
 import 'package:words/models/game_model.dart';
 import 'package:words/models/grid_model.dart';
@@ -78,6 +80,9 @@ class Grid extends StatelessWidget {
         ),
       ),
       onVerticalDragStart: (details) {
+
+        SetRowGridVisibilityCommand(context).run(false);
+
         _x = details.globalPosition.dx;
         int index = _findLineIndex(game, Axis.vertical, screenWidth(context), _x! );
         _targetOffset = game.gridModel.columnGrid.columns[index].scrollController.offset;
@@ -96,8 +101,13 @@ class Grid extends StatelessWidget {
         _handleDragEnd(game, Axis.vertical, screenHeight(context), screenWidth(context), _x!);
         _x = null;
         _targetOffset = null;
+
+        SetRowGridVisibilityCommand(context).run(true);
       },
       onHorizontalDragStart: (details) {
+
+        SetColumnGridVisibilityCommand(context).run(false);
+
         _y = details.globalPosition.dy;
         int index = _findLineIndex(game, Axis.horizontal, screenHeight(context), _y! );
         _targetOffset = game.gridModel.rowsGrid.rows[index].scrollController.offset;
@@ -114,6 +124,8 @@ class Grid extends StatelessWidget {
         _handleDragEnd(game, Axis.horizontal, screenWidth(context), screenHeight(context), _y!);
         _y = null;
         _targetOffset = null;
+
+        SetColumnGridVisibilityCommand(context).run(true);
       },
     );
   }
