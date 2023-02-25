@@ -7,17 +7,25 @@ class ColumnModel extends ChangeNotifier {
   late List<ItemModel> _items;
   late ScrollController _scrollController;
 
-  ColumnModel({required List<ItemModel> items, required double scrollOffset}) {
+  ColumnModel({required List<ItemModel> items}) {
     _items = items;
-    _scrollController = ScrollController(initialScrollOffset: scrollOffset);
+
   }
 
   ScrollController get scrollController => _scrollController;
   List<ItemModel> get items => _items;
 
-  void set items(List<ItemModel> newItems) {
-    _items = newItems;
-    _scrollController.jumpTo(0.0);//ScrollController(initialScrollOffset: 0.0); // todo arr * 3 & set ctrl to 1/3
+  void initScrollOffset(double offset) {
+    _scrollController = ScrollController(initialScrollOffset: offset);
+  }
+
+  void setScrollOffset(double offset) {
+    _scrollController.jumpTo(offset);
     notifyListeners();
+  }
+
+  void set items(List<ItemModel> newItems) {
+    //newItems = [...newItems, ...newItems];
+    _items = newItems;
   }
 }

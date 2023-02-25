@@ -26,15 +26,21 @@ class GridModel with ChangeNotifier {
     List<ColumnModel> cols = [];
     List<RowModel> rows = [];
 
+    // columns
     for (List<ItemModel> col in grid) {
-      cols.add(ColumnModel(items: col, scrollOffset: 0.0));
+      List<ItemModel> colItems = [...col, ...col];
+      cols.add(ColumnModel(items: colItems));
     }
+
+    // rows
     for  (int i = 0; i < grid[0].length; i ++) {
       List<ItemModel> rowItems = [];
       for (List<ItemModel> col in grid) {
         rowItems.add(col[i]);
       }
-      rows.add(RowModel(items: rowItems, scrollOffset: 0.0));
+      // double & set scroll to mid => enables to scroll up
+      rowItems = [...rowItems, ...rowItems];
+      rows.add(RowModel(items: rowItems));
     }
 
     _columnGrid.setColumns(cols);
@@ -46,7 +52,4 @@ class GridModel with ChangeNotifier {
 
   ColumnGridModel get columnGrid => _columnGrid;
   RowGridModel get rowsGrid => _rowGrid;
-
-
-
 }

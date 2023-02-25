@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:words/commands/find_line_index_command.dart';
 import 'package:words/commands/handle_drag_update_command.dart';
 import 'package:words/commands/handle_drag_end_command.dart';
+import 'package:words/commands/init_scroll_offsets_command.dart';
 import 'package:words/commands/set_column_grid_visibility_command.dart';
 import 'package:words/commands/set_row_grid_visibility_command.dart';
 import 'package:words/const/size_constants.dart';
@@ -16,18 +17,17 @@ import 'package:words/views/widgets/row_letters.dart';
 
 class Grid extends StatelessWidget {
 
+  Grid() {
 
-  Grid();
-
-
-
-  int _findLineIndex(GameModel game, Axis axis, double max, double p) {
-    return (p / max * (axis == Axis.horizontal ? game.rowNumber : game.colsNumber)).floor();
   }
 
 
   @override
   Widget build(BuildContext context) {
+
+
+    // init scrolloffsets
+    InitScrollOffsetsCommand(context).run(screenWidth(context), screenHeight(context));
 
     print ('[!] GRID BUILT!');
 

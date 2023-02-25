@@ -39,28 +39,30 @@ class HandleDragEndCommand extends BaseCommand {
     var items;
 
     // restructure
-    if (axis == Axis.horizontal) {
+    if (axis == Axis.horizontal) {  // ROW
       items = gameModel.gridModel.rowsGrid.rows[index].items;
       // ****
-
       items = items.sublist(newI) + items.sublist(0, newI);
 
-      gameModel.gridModel.rowsGrid.rows[index].items = items;
+      gameModel.gridModel.rowsGrid.rows[index].items = items;//[...items, ...items];
+      gameModel.gridModel.rowsGrid.rows[index].setScrollOffset(axisSize);
 
       for (int i = 0; i < gameModel.gridModel.columnGrid.columns.length; i++) {
         gameModel.gridModel.columnGrid.columns[i].items[index] = items[i];
+        gameModel.gridModel.columnGrid.columns[i].items[index + gameModel.rowNumber] = items[i];
       }
-    } else if (axis == Axis.vertical) {
+    } else if (axis == Axis.vertical) { // COLUMN
 
       items = gameModel.gridModel.columnGrid.columns[index].items;
       items = items.sublist(newI) + items.sublist(0, newI);
-      //print (items.map((e) => e.letter));
 
-      gameModel.gridModel.columnGrid.columns[index].items = items;
+      gameModel.gridModel.columnGrid.columns[index].items = items;//[...items, ...items];
+      gameModel.gridModel.columnGrid.columns[index].setScrollOffset(axisSize);
 
       // structure rowGrid.rows
       for (int i = 0; i < gameModel.gridModel.rowsGrid.rows.length; i++) {
         gameModel.gridModel.rowsGrid.rows[i].items[index] = items[i];
+        gameModel.gridModel.rowsGrid.rows[i].items[index + gameModel.colsNumber] = items[i];
       }
     }
   }

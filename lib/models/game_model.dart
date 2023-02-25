@@ -18,10 +18,6 @@ class GameModel extends ChangeNotifier {
     _gridModel.init(_colsNumber, _rowsNumber);
   }
 
-  void init() {
-    _gridModel.init(_colsNumber, _rowsNumber);
-  }
-
   GridModel get gridModel => _gridModel;
   int get colsNumber => _colsNumber;
   int get rowNumber => _rowsNumber;
