@@ -26,7 +26,7 @@ class Grid extends StatelessWidget {
   Future<void> _handleDragEnd(
       GameModel game,
       Axis axis,
-      axisSize,
+      double axisSize,
       double crossAxisSize,
       double crossPosition)
   async {
@@ -51,11 +51,9 @@ class Grid extends StatelessWidget {
 
     // find new index of line start to restructure grid
     int nbItemsPerLine = axis == Axis.horizontal ? game.rowNumber : game.colsNumber;
-    int newI = (targetOffset % (nbItemsPerLine * itemSize) / itemSize).round();
+    int newI = ((targetOffset % axisSize) % (nbItemsPerLine * itemSize) / itemSize).round();
 
     var items;
-    //String letter = items[newI].letter;
-    //print ('$newI $letter');
 
     // restructure
     if (axis == Axis.horizontal) {
@@ -77,12 +75,14 @@ class Grid extends StatelessWidget {
       print (items.map((e) => e.letter));
       items = items.sublist(newI) + items.sublist(0, newI);
       print (items.map((e) => e.letter));
+
       game.gridModel.columnGrid.columns[index].items = items;
+
       // structure rowGrid.rows
       for (int i = 0; i < game.gridModel.rowsGrid.rows.length; i++) {
         game.gridModel.rowsGrid.rows[i].items[index] = items[i];
       }
-      print((game.gridModel.columnGrid.columns[index].items).map((e) => e.letter));
+      //print((game.gridModel.columnGrid.columns[index].items).map((e) => e.letter));
     }
 
 

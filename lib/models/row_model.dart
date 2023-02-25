@@ -14,7 +14,11 @@ class RowModel extends ChangeNotifier {
 
   ScrollController get scrollController => _scrollController;
   List<ItemModel> get items => _items;
+
   void set items(List<ItemModel> newItems) {
     _items = newItems;
+    // set controller offset !!!
+    _scrollController.jumpTo(0.0);//ScrollController(initialScrollOffset: 0.0); // todo arr * 3 & set ctrl to 1/3
+    notifyListeners();
   }
 }

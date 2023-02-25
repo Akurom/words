@@ -17,5 +17,7 @@ class ColumnModel extends ChangeNotifier {
 
   void set items(List<ItemModel> newItems) {
     _items = newItems;
+    _scrollController.jumpTo(0.0);//ScrollController(initialScrollOffset: 0.0); // todo arr * 3 & set ctrl to 1/3
+    notifyListeners();
   }
 }
